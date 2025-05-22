@@ -1,7 +1,8 @@
-import { GraphQLNonNull, GraphQLObjectType, GraphQLScalarType, GraphQLString } from "graphql";
+import { GraphQLNonNull, GraphQLObjectType, GraphQLString } from "graphql";
 import { UserType, CreateUserInputType, CreateUserInputInterface, ChangeUserInputType } from "../types/user.js";
 import { UUIDType } from "../types/uuid.js";
 import { ChangeProfileInputType, CreateProfileInputType, ProfileType } from "../types/profile.js";
+import { ChangePostInputType, CreatePostInputType, PostType } from "../types/post.js";
 
 export const mutation = new GraphQLObjectType({
   name: "Mutation",
@@ -115,6 +116,65 @@ export const mutation = new GraphQLObjectType({
           },
         });
       },
+    },
+    createPost: {
+      type: new GraphQLNonNull(PostType),
+      args: {
+       dto: {
+        type: new GraphQLNonNull(CreatePostInputType)
+       },
+      },
+      resolve: async (_, { title, content }, context) => {
+        const { prisma } = context;
+
+        return prisma.post.create({
+          data: {
+            title,
+            content,
+          },
+        });
+      }
+    },
+    changePost: {
+      type: new GraphQLNonNull(PostType),
+      args: {
+        id: { 
+          type: new GraphQLNonNull(UUIDType) 
+        },
+        dto: {
+          type: new GraphQLNonNull(ChangePostInputType),
+        }
+      },
+      resolve: async (_, data, context) => {
+        const { prisma } = context;
+        const { id, dto } = data as { id: string; dto: CreateUserInputInterface };
+
+        return prisma.post.update({
+          where: {
+            id,
+          },
+          data: {
+            ...dto,
+          },
+        });
+      }
+    },
+    deletePost: {
+      type: new GraphQLNonNull(GraphQLString),
+      args: {
+        id: { 
+          type: new GraphQLNonNull(UUIDType) 
+        },
+      },
+      resolve: async (_, { id }, context) => {
+        const { prisma } = context;
+
+        return prisma.post.delete({
+          where: {
+            id,
+          },
+        });
+      }
     }
   }),
 })
