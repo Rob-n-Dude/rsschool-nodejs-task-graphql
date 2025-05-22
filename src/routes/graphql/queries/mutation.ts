@@ -4,9 +4,9 @@ import { UUIDType } from "../types/uuid.js";
 import { ChangeProfileInputType, CreateProfileInputType, ProfileType } from "../types/profile.js";
 import { ChangePostInputType, CreatePostInputType, PostType } from "../types/post.js";
 
-export const mutation = new GraphQLObjectType({
+export const AppMutation = new GraphQLObjectType({
   name: "Mutation",
-  fields: () => ({
+  fields: {
     createUser: {
       type: new GraphQLNonNull(UserType),
       args: {
@@ -176,5 +176,5 @@ export const mutation = new GraphQLObjectType({
         });
       }
     }
-  }),
+  },
 })

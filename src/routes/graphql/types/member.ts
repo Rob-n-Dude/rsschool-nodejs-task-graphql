@@ -1,22 +1,7 @@
-import { GraphQLEnumType, GraphQLFloat, GraphQLInt, GraphQLObjectType, GraphQLString } from 'graphql';
+import { GraphQLEnumType, GraphQLFloat, GraphQLInt, GraphQLNonNull, GraphQLObjectType } from 'graphql';
 
-export const MemberType = new GraphQLObjectType<MemberType>({
-  name: 'MemberType',
-  fields: () => ({
-    id: {
-      type: GraphQLString
-    },
-    discount: {
-      type: GraphQLFloat,
-    },
-    postsLimitPerMonth: {
-      type: GraphQLInt,
-    }
-  })
-})
-
-export const MemberTypeIdEnum = new GraphQLEnumType({
-  name: 'MemberTypeEnum',
+export const MemberTypeId = new GraphQLEnumType({
+  name: 'MemberTypeId',
   values: {
     BASIC: {
       value: 'BASIC',
@@ -27,8 +12,17 @@ export const MemberTypeIdEnum = new GraphQLEnumType({
   },
 })
 
-export interface MemberType {
-  id: string;
-  discount: number;
-  postsLimitPerMonth: number;
-}
+export const MemberType = new GraphQLObjectType({
+  name: 'MemberType',
+  fields: {
+    id: {
+      type: new GraphQLNonNull(MemberTypeId)
+    },
+    discount: {
+      type: new GraphQLNonNull(GraphQLFloat),
+    },
+    postsLimitPerMonth: {
+      type: new GraphQLNonNull(GraphQLInt),
+    }
+  }
+})

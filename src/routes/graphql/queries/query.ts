@@ -1,13 +1,13 @@
 import {  GraphQLList, GraphQLNonNull, GraphQLObjectType } from "graphql";
-import { MemberType } from "../types/member.js";
+import { MemberType, MemberTypeId } from "../types/member.js";
 import { UUIDType } from "../types/uuid.js";
 import { UserType } from "../types/user.js";
 import { PostType } from "../types/post.js";
 import { ProfileType } from "../types/profile.js";
 
-export const query = new GraphQLObjectType({
+export const AppQuery = new GraphQLObjectType({
   name: "Query",
-  fields: () => ({
+  fields: {
     memberTypes: {
       type: new GraphQLList(MemberType), 
       resolve: async (_, __, context) => {
@@ -18,7 +18,7 @@ export const query = new GraphQLObjectType({
     memberType: {
       type: MemberType,
       args: {
-        id: { type: new GraphQLNonNull(UUIDType) },
+        id: { type: new GraphQLNonNull(MemberTypeId) },
       },
       resolve: async (_, { id }, context) => {
         const { prisma } = context
@@ -91,5 +91,5 @@ export const query = new GraphQLObjectType({
         })
       }
     }
-  }),
+  },
 })
