@@ -52,3 +52,10 @@ export const ChangeProfileInputType = new GraphQLInputObjectType({
     },
   },
 })
+
+export interface CreateProfileInputInterface {
+  userId: string;
+  memberTypeId: string;
+  isMale: boolean;
+  yearOfBirth: number;
+}

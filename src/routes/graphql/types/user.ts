@@ -18,7 +18,7 @@ export const UserType = new GraphQLObjectType<UserInterface>({
       type: new GraphQLNonNull(GraphQLFloat),
     },
     profile: {
-      type: new GraphQLNonNull(ProfileType),
+      type: ProfileType,
     },
     posts: {
       type: new GraphQLList(PostType),

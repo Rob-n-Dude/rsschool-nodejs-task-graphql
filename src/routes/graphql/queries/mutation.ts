@@ -1,7 +1,7 @@
 import { GraphQLNonNull, GraphQLObjectType, GraphQLString } from "graphql";
 import { UserType, CreateUserInputType, CreateUserInputInterface, ChangeUserInputType } from "../types/user.js";
 import { UUIDType } from "../types/uuid.js";
-import { ChangeProfileInputType, CreateProfileInputType, ProfileType } from "../types/profile.js";
+import { ChangeProfileInputType, CreateProfileInputInterface, CreateProfileInputType, ProfileType } from "../types/profile.js";
 import { ChangePostInputType, CreatePostInputType, PostType } from "../types/post.js";
 
 export const AppMutation = new GraphQLObjectType({
@@ -71,8 +71,9 @@ export const AppMutation = new GraphQLObjectType({
       },
       resolve: async (_, data, context) => {
         const { prisma } = context;
-        const { dto } = data as { dto: CreateUserInputInterface };
+        const { dto } = data as { dto: CreateProfileInputInterface };
 
+        console.log('dto', dto);
         return prisma.profile.create({
           data: {
             ...dto,
@@ -172,6 +173,60 @@ export const AppMutation = new GraphQLObjectType({
         return prisma.post.delete({
           where: {
             id,
+          },
+        });
+      }
+    },
+    subscribeTo: {
+      type: new GraphQLNonNull(GraphQLString),
+      args: {
+        userId: { 
+          type: new GraphQLNonNull(UUIDType) 
+        },
+        authorId: {
+          type: new GraphQLNonNull(UUIDType) 
+        }
+      },
+      resolve: async (_, { userId, authorId }, context) => {
+        const { prisma } = context;
+
+        return prisma.user.update({
+          where: {
+            id: userId,
+          },
+          data: {
+            subscriptions: {
+              connect: {
+                id: authorId,
+              },
+            },
+          },
+        });
+      }
+    },
+    unsubscribeFrom: {
+      type: new GraphQLNonNull(GraphQLString),
+      args: {
+        userId: {
+          type: new GraphQLNonNull(UUIDType)
+        },
+        authorId: {
+          type: new GraphQLNonNull(UUIDType)
+        },
+      },
+      resolve: async (_, { userId, authorId }, context) => {
+        const { prisma } = context;
+
+        return prisma.user.update({
+          where: {
+            id: userId,
+          },
+          data: {
+            subscriptions: {
+              disconnect: {
+                id: authorId,
+              },
+            },
           },
         });
       }

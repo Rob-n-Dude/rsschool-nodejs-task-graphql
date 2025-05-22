@@ -12,7 +12,7 @@ export const AppQuery = new GraphQLObjectType({
       type: new GraphQLList(MemberType), 
       resolve: async (_, __, context) => {
         const { prisma } = context
-        return  prisma.memberType.findMany()
+        return await prisma.memberType.findMany()
       },
     },
     memberType: {
@@ -22,7 +22,7 @@ export const AppQuery = new GraphQLObjectType({
       },
       resolve: async (_, { id }, context) => {
         const { prisma } = context
-        return prisma.memberType.findUnique({
+        return await prisma.memberType.findUnique({
           where: {
             id,
           }})
@@ -32,7 +32,7 @@ export const AppQuery = new GraphQLObjectType({
       type: new GraphQLList(UserType),
       resolve: async (_, __, context) => {
         const { prisma } = context
-        return prisma.user.findMany()
+        return await prisma.user.findMany()
       }
     },
     user: {
@@ -42,7 +42,7 @@ export const AppQuery = new GraphQLObjectType({
       },
       resolve: async (_, { id }, context) => {
         const { prisma } = context
-        return prisma.user.findUnique({
+        return await prisma.user.findUnique({
           where: {
             id,
           }
@@ -53,7 +53,7 @@ export const AppQuery = new GraphQLObjectType({
       type: new GraphQLList(PostType),
       resolve: async (_, __, context) => {
         const { prisma } = context
-        return prisma.post.findMany()
+        return await prisma.post.findMany()
       }
     },
     post: {
@@ -63,7 +63,7 @@ export const AppQuery = new GraphQLObjectType({
       },
       resolve: async (_, { id }, context) => {
         const { prisma } = context
-        return prisma.post.findUnique({
+        return await prisma.post.findUnique({
           where: {
             id,
           }
@@ -74,7 +74,7 @@ export const AppQuery = new GraphQLObjectType({
       type: new GraphQLList(ProfileType),
       resolve: async (_, __, context) => {
         const { prisma } = context
-        return prisma.profile.findMany()
+        return await prisma.profile.findMany()
       }
     },
     profile: {
@@ -84,7 +84,7 @@ export const AppQuery = new GraphQLObjectType({
       },
       resolve: async (_, { id }, context) => {
         const { prisma } = context
-        return prisma.profile.findUnique({
+        return await prisma.profile.findUnique({
           where: {
             id,
           }
