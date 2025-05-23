@@ -1,4 +1,5 @@
-import { GraphQLEnumType, GraphQLFloat, GraphQLInt, GraphQLNonNull, GraphQLObjectType } from 'graphql';
+import { GraphQLEnumType, GraphQLFloat, GraphQLInt, GraphQLList, GraphQLNonNull, GraphQLObjectType } from 'graphql';
+import { ProfileType } from './profile.js';
 
 export const MemberTypeId = new GraphQLEnumType({
   name: 'MemberTypeId',
@@ -14,7 +15,7 @@ export const MemberTypeId = new GraphQLEnumType({
 
 export const MemberType = new GraphQLObjectType({
   name: 'MemberType',
-  fields: {
+  fields: () => ({
     id: {
       type: new GraphQLNonNull(MemberTypeId)
     },
@@ -23,6 +24,12 @@ export const MemberType = new GraphQLObjectType({
     },
     postsLimitPerMonth: {
       type: new GraphQLNonNull(GraphQLInt),
-    }
-  }
+    },
+    profiles: {
+      type: new GraphQLList(ProfileType),
+      resolve: async (parent, _, { prisma }) => {
+        return await prisma.profile.findMany({where:{memberTypeId: parent.id}})
+      },
+    },
+  })
 })

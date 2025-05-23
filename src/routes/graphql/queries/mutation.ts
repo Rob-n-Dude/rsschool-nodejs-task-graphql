@@ -73,7 +73,6 @@ export const AppMutation = new GraphQLObjectType({
         const { prisma } = context;
         const { dto } = data as { dto: CreateProfileInputInterface };
 
-        console.log('dto', dto);
         return prisma.profile.create({
           data: {
             ...dto,
@@ -97,9 +96,7 @@ export const AppMutation = new GraphQLObjectType({
           where: {
             id,
           },
-          data: {
-            ...dto,
-          },
+          data: dto,
         });
       }
     },
@@ -154,9 +151,7 @@ export const AppMutation = new GraphQLObjectType({
           where: {
             id,
           },
-          data: {
-            ...dto,
-          },
+          data: dto,
         });
       }
     },

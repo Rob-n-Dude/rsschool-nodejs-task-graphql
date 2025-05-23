@@ -1,11 +1,10 @@
 import { GraphQLFloat, GraphQLInputObjectType, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql';
 import { UUIDType } from './uuid.js';
-import { MemberType } from './member.js';
 import { ProfileType } from './profile.js';
 import { PostType } from './post.js';
 
 
-export const UserType = new GraphQLObjectType<UserInterface>({
+export const UserType = new GraphQLObjectType({
   name: 'UserType',
   fields: () => ({
     id: {
@@ -17,18 +16,56 @@ export const UserType = new GraphQLObjectType<UserInterface>({
     balance: {
       type: new GraphQLNonNull(GraphQLFloat),
     },
-    profile: {
-      type: ProfileType,
-    },
     posts: {
       type: new GraphQLList(PostType),
+      resolve: async (parent, _, { prisma }) => {
+        return await prisma.post.findMany({
+          where: {
+            authorId: parent.id,
+          }
+        })
+      },
     },
-    userSubscribedTo: {
-      type: new GraphQLList(MemberType),
+   profile: {
+    type: ProfileType as GraphQLObjectType,
+    resolve: async (parent, _, { prisma }) => {
+      const result = await prisma.profile.findUnique({
+        where: {
+          userId: parent.id,
+        },
+      });
+      return result;
+    },
+  },
+   userSubscribedTo: {
+      type: new GraphQLList(UserType),
+      resolve: async (parent, _, { prisma }) => {
+        return await prisma.user.findMany({
+          where: { 
+            subscribedToUser: { 
+              some: { 
+                subscriberId: parent.id 
+              } 
+            } 
+          },
+        });
+      },
     },
     subscribedToUser: {
-      type: new GraphQLList(MemberType),
-    }
+      type: new GraphQLList(UserType),
+      resolve: async (parent, _, { prisma }) => {
+        const result = await prisma.user.findMany({
+          where: {
+            userSubscribedTo: { 
+              some: { 
+                authorId: parent.id
+              }
+            },
+          },
+        });
+        return result;
+      },
+    },
   })
 })
 
