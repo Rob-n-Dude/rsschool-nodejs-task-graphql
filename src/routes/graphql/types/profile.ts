@@ -1,9 +1,10 @@
 import { GraphQLBoolean, GraphQLInputObjectType, GraphQLInt, GraphQLNonNull, GraphQLObjectType } from "graphql";
 import { UUIDType } from "./uuid.js";
 import { MemberType, MemberTypeId } from "./member.js";
-import { UserType } from "./user.js";
+import { UserInterface, UserType } from "./user.js";
+import { Context } from "./context.js";
 
-export const ProfileType = new GraphQLObjectType({
+export const ProfileType = new GraphQLObjectType<ProfileTypeInterface, Context>({
   name: 'ProfileType',
   fields: () => ({
     id: {
@@ -80,3 +81,13 @@ export interface CreateProfileInputInterface {
   isMale: boolean;
   yearOfBirth: number;
 }
+
+export interface ProfileTypeInterface { 
+  id: string;
+  isMale: boolean;
+  yearOfBirth: number;
+  memberTypeId: string;
+  userId: string;
+  user: UserInterface;
+  memberType: MemberType;
+} 
