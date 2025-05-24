@@ -32,7 +32,7 @@ export const userSubscribeToLoader = (prisma: PrismaClient) => {
 
 
     return ids.map((id) => {
-      return subscribedAuthors[id]
+      return subscribedAuthors[id] || []
     });
   });
 }

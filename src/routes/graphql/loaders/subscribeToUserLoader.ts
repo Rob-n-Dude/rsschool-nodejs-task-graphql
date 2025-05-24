@@ -30,7 +30,7 @@ export const subscribeToUserLoader = (prisma: PrismaClient) => {
     }, {} as Record<string, SubscriberType[]>);
 
     return ids.map((id) => {
-      return subscriptions[id]
+      return subscriptions[id] || []
     })
   })
 }

@@ -32,13 +32,13 @@ export const UserType = new GraphQLObjectType<UserInterface, Context>({
    userSubscribedTo: {
       type: new GraphQLList(UserType),
       resolve: async (parent, _, { loader }) => {
-        return await loader.userSubscribeTo.load(parent.id);
+        return await loader.userSubscribedTo.load(parent.id);
       },
     },
     subscribedToUser: {
       type: new GraphQLList(UserType),
       resolve: async (parent, _, { loader }) => {
-        return await loader.subscribeToUser.load(parent.id);
+        return await loader.subscribedToUser.load(parent.id);
       },
     },
   })

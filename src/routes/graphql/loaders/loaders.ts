@@ -14,14 +14,14 @@ export const getApplicationLoader = (prisma: PrismaClient) => ({
   profile: profileLoader(prisma),
   post: postLoader(prisma),
   memberType: memberTypeLoader(prisma),
-  userSubscribeTo: userSubscribeToLoader(prisma),
-  subscribeToUser: subscribeToUserLoader(prisma), 
+  userSubscribedTo: userSubscribeToLoader(prisma),
+  subscribedToUser: subscribeToUserLoader(prisma), 
 })
 
 export interface ApplicationLoader {
   profile: DataLoader<string, ProfileTypeInterface>;
   post: DataLoader<string, PostInterface>;
   memberType: DataLoader<string, MemberType>;
-  userSubscribeTo: DataLoader<string, UserInterface>;
-  subscribeToUser: DataLoader<string, UserInterface[]>;
+  userSubscribedTo: DataLoader<string, UserInterface>;
+  subscribedToUser: DataLoader<string, UserInterface[]>;
 }
