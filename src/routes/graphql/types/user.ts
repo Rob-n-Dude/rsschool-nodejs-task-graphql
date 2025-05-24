@@ -31,16 +31,8 @@ export const UserType = new GraphQLObjectType<UserInterface, Context>({
   },
    userSubscribedTo: {
       type: new GraphQLList(UserType),
-      resolve: async (parent, _, { prisma }) => {
-        return await prisma.user.findMany({
-          where: { 
-            subscribedToUser: { 
-              some: { 
-                subscriberId: parent.id 
-              } 
-            } 
-          },
-        });
+      resolve: async (parent, _, { loader }) => {
+        return await loader.userSubscribeTo.load(parent.id);
       },
     },
     subscribedToUser: {
@@ -98,7 +90,7 @@ export interface ChangeUserInputInterface {
 export interface UserInterface {
   id: string;
   name: string;
-  balance: string;
+  balance: number;
   profile: string;
   posts: string;
   userSubscribedTo: UserInterface[];
