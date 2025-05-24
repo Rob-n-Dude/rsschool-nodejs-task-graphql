@@ -37,17 +37,8 @@ export const UserType = new GraphQLObjectType<UserInterface, Context>({
     },
     subscribedToUser: {
       type: new GraphQLList(UserType),
-      resolve: async (parent, _, { prisma }) => {
-        const result = await prisma.user.findMany({
-          where: {
-            userSubscribedTo: { 
-              some: { 
-                authorId: parent.id
-              }
-            },
-          },
-        });
-        return result;
+      resolve: async (parent, _, { loader }) => {
+        return await loader.subscribeToUser.load(parent.id);
       },
     },
   })

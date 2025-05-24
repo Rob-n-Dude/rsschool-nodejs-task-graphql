@@ -8,12 +8,14 @@ import { MemberType } from "../types/member.js";
 import { memberTypeLoader } from "./memberTypeLoader.js";
 import { UserInterface } from "../types/user.js";
 import { userSubscribeToLoader } from "./userSubscribeToLoader.js";
+import { subscribeToUserLoader } from "./subscribeToUserLoader.js";
 
 export const getApplicationLoader = (prisma: PrismaClient) => ({
   profile: profileLoader(prisma),
   post: postLoader(prisma),
   memberType: memberTypeLoader(prisma),
   userSubscribeTo: userSubscribeToLoader(prisma),
+  subscribeToUser: subscribeToUserLoader(prisma), 
 })
 
 export interface ApplicationLoader {
@@ -21,4 +23,5 @@ export interface ApplicationLoader {
   post: DataLoader<string, PostInterface>;
   memberType: DataLoader<string, MemberType>;
   userSubscribeTo: DataLoader<string, UserInterface>;
+  subscribeToUser: DataLoader<string, UserInterface[]>;
 }
