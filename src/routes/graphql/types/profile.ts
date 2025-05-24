@@ -82,6 +82,12 @@ export interface CreateProfileInputInterface {
   yearOfBirth: number;
 }
 
+export interface ChangeProfileInputInterface {
+  isMale?: boolean;
+  yearOfBirth?: number;
+  memberTypeId?: string;
+}
+
 export interface ProfileTypeInterface { 
   id: string;
   isMale: boolean;

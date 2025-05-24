@@ -1,11 +1,14 @@
 import {  GraphQLList, GraphQLNonNull, GraphQLObjectType } from "graphql";
 import { MemberType, MemberTypeId } from "../types/member.js";
 import { UUIDType } from "../types/uuid.js";
-import { UserType } from "../types/user.js";
-import { PostType } from "../types/post.js";
-import { ProfileType } from "../types/profile.js";
+import { UserInterface, UserType } from "../types/user.js";
+import { PostInterface, PostType } from "../types/post.js";
+import { ProfileType, ProfileTypeInterface } from "../types/profile.js";
+import { Context } from "../types/context.js";
 
-export const AppQuery = new GraphQLObjectType({
+type ReturnType = MemberType | PostInterface | ProfileTypeInterface | UserInterface
+
+export const AppQuery = new GraphQLObjectType<ReturnType, Context>({
   name: "Query",
   fields: {
     memberTypes: {
@@ -16,11 +19,11 @@ export const AppQuery = new GraphQLObjectType({
       },
     },
     memberType: {
-      type: MemberType,
+      type: MemberType as GraphQLObjectType,
       args: {
         id: { type: new GraphQLNonNull(MemberTypeId) },
       },
-      resolve: async (_, { id }, context) => {
+      resolve: async (_, { id }: { id: string }, context) => {
         const { prisma } = context
         return await prisma.memberType.findUnique({
           where: {
@@ -36,11 +39,11 @@ export const AppQuery = new GraphQLObjectType({
       }
     },
     user: {
-      type: UserType,
+      type: UserType as GraphQLObjectType,
       args: {
         id: { type: new GraphQLNonNull(UUIDType) },
       },
-      resolve: async (_, { id }, context) => {
+      resolve: async (_, { id }: { id: string }, context) => {
         const { prisma } = context
         return await prisma.user.findUnique({
           where: {
@@ -57,11 +60,11 @@ export const AppQuery = new GraphQLObjectType({
       }
     },
     post: {
-      type: PostType,
+      type: PostType as GraphQLObjectType,
       args: {
         id: { type: new GraphQLNonNull(UUIDType) },
       },
-      resolve: async (_, { id }, context) => {
+      resolve: async (_, { id }: { id: string }, context) => {
         const { prisma } = context
         return await prisma.post.findUnique({
           where: {
@@ -78,11 +81,11 @@ export const AppQuery = new GraphQLObjectType({
       }
     },
     profile: {
-      type: ProfileType,
+      type: ProfileType as GraphQLObjectType,
       args: {
         id: { type: new GraphQLNonNull(UUIDType) },
       },
-      resolve: async (_, { id }, context) => {
+      resolve: async (_, { id }: { id: string }, context) => {
         const { prisma } = context
         return await prisma.profile.findUnique({
           where: {

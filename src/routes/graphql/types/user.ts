@@ -19,23 +19,14 @@ export const UserType = new GraphQLObjectType<UserInterface, Context>({
     },
     posts: {
       type: new GraphQLList(PostType),
-      resolve: async (parent, _, { prisma }) => {
-        return await prisma.post.findMany({
-          where: {
-            authorId: parent.id,
-          }
-        })
+      resolve: async (parent, _, { loader }) => {
+        return await loader.post.load(parent.id)
       },
     },
    profile: {
     type: ProfileType as GraphQLObjectType,
-    resolve: async (parent, _, { prisma }) => {
-      const result = await prisma.profile.findUnique({
-        where: {
-          userId: parent.id,
-        },
-      });
-      return result;
+    resolve: async (parent, _, { loader }) => {
+      return await loader.profile.load(parent.id);
     },
   },
    userSubscribedTo: {

@@ -3,7 +3,7 @@ import { UUIDType } from "./uuid.js";
 import { UserInterface, UserType } from "./user.js";
 import { Context } from "./context.js";
 
-export const PostType = new GraphQLObjectType<PostType, Context>({
+export const PostType = new GraphQLObjectType<PostInterface, Context>({
   name: 'PostType',
   fields: () => ({
     id: {
@@ -52,10 +52,21 @@ export const ChangePostInput = new GraphQLInputObjectType({
   }),
 })
 
-interface PostType {
+export interface CreatePostInputInterface {
+  title: string;
+  content: string;
+  authorId: string;
+}
+
+export interface ChangePostInputInterface {
+  title?: string;
+  content?: string;
+}
+
+export interface PostInterface {
   id: string;
   title: string;
   content: string;
   authorId: string;
-  author: UserInterface
+  author: UserInterface;
 }
