@@ -3,6 +3,7 @@ import { UUIDType } from './uuid.js';
 import { ProfileType } from './profile.js';
 import { PostType } from './post.js';
 import { Context } from './context.js';
+import { SubscribersOnAuthors } from '@prisma/client';
 
 
 export const UserType = new GraphQLObjectType<UserInterface, Context>({
@@ -84,6 +85,6 @@ export interface UserInterface {
   balance: number;
   profile: string;
   posts: string;
-  userSubscribedTo: UserInterface[];
-  subscribedToUser: UserInterface[];
+  userSubscribedTo: SubscribersOnAuthors[];
+  subscribedToUser: SubscribersOnAuthors[];
 }

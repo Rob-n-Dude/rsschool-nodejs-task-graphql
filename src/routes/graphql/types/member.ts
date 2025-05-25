@@ -29,7 +29,11 @@ export const MemberType = new GraphQLObjectType<MemberType, Context>({
     profiles: {
       type: new GraphQLList(ProfileType),
       resolve: async (parent, _, { prisma }: Context) => {
-        return await prisma.profile.findMany({where:{memberTypeId: parent.id}})
+        return await prisma.profile.findMany({
+          where:{
+            memberTypeId: parent.id
+          }
+        })
       },
     },
   })

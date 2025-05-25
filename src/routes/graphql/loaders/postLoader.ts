@@ -23,7 +23,7 @@ export const postLoader = (prisma: PrismaClient) => {
 
 
     return ids.map((id) => {
-      return postsByAuthor[id];
+      return postsByAuthor[id] || [];
     });
   })
 }
